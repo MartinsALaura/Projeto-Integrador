@@ -1,4 +1,4 @@
-const usuarioService = require('../services/user.service');
+const usuarioService = require('../services/usuario.service');
 
 const usuarioController = {
     async cadastrar(req, res) {

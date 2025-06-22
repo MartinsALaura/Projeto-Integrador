@@ -1,0 +1,40 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
+import { theme } from './styles/theme';
+import Reset from './styles/reset';
+import Navbar from './components/NavBar/Navbar';
+//import Home from './components/Homepage/Home';
+
+const AppWrapper = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Main = styled.main`
+  flex: 1;
+`;
+
+function App() {
+  return (
+    <ThemeProvider theme={theme}>
+      <Router>
+        <AppWrapper>
+          <Reset />
+          <Navbar />
+          <Main>
+            <Routes>
+              {/* <Route path="/" element={<Home />} /> */}
+              {/* Add other routes here */}
+              <Route path="*" element={<div>Page Not Found</div>} />
+            </Routes>
+          </Main>
+        </AppWrapper>
+      </Router>
+    </ThemeProvider>
+  );
+}
+
+export default App;

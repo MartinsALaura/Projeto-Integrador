@@ -17,3 +17,6 @@ Projeto desenvolvido para a disciplina Projeto Integrador - Portal Web no Técno
 4. Para rodar a API, entre na pasta backend e rode no terminal o comando `npm run dev`
 5. Teste a conexão usando o health endpoint usando curl (`curl http://localhost:3000/api/health`) ou postman.
 
+### frontend
+1. Instale as dependências usando `npm install`.
+2. Rode `npm start`.
