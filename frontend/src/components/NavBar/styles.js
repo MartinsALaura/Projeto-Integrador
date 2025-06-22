@@ -6,9 +6,3 @@ export const Nav = styled.nav`
   min-height: 148px;
   padding: 20px 50px
 `;
-
-export const Container = styled(Grid).attrs({
-  item: true,
-  xs: 2,
-})`
-`;
