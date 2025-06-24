@@ -5,9 +5,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
 import { theme } from './styles/theme';
 import Reset from './styles/reset';
-import Navbar from './components/NavBar';
-import Footer from './components/Footer/Footer';
-//import Home from './components/Homepage/Home';
+import HomePage from './components/HomePage';
 
 const AppWrapper = styled.div`
   min-height: 100vh;
@@ -26,15 +24,13 @@ function App() {
         <Router>
           <AppWrapper>
             <Reset />
-            <Navbar />
             <Main>
               <Routes>
-                {/* <Route path="/" element={<Home />} /> */}
+                <Route path="/" element={<HomePage />} />
                 {/* Add other routes here */}
                 <Route path="*" element={<div>Page Not Found</div>} />
               </Routes>
             </Main>
-            <Footer />
           </AppWrapper>
         </Router>
       </StyledThemeProvider>
