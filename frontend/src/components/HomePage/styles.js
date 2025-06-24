@@ -1,9 +1,21 @@
 import styled from "styled-components";
+import { useMediaQueries } from "../../styles/mediaQuery";
 
 export const Container = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  flex-direction: column;
+  min-height: 100vh;
   background-color: ${(props) => props.theme.colors.light};
+`;
+
+export const Content = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  padding: ${props => props.isTablet ? '24px' : '20px'};
+  background-color: ${props => props.theme.colors.light};
+  align-self: center;
 `;
