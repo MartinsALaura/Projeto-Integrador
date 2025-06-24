@@ -1,5 +1,5 @@
 import React from 'react';
-import { Nav, Container } from './styles';
+import { Nav, MainContent } from './styles';
 import Grid from '@mui/material/Grid';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import IconButton from '@mui/material/IconButton';
@@ -9,8 +9,10 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { useMediaQueries } from '../../styles/mediaQuery';
 
 const Navbar = () => {
+  const { isTablet } = useMediaQueries();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -21,12 +23,20 @@ const Navbar = () => {
   };
 
   return (
-    <Nav>
-      <Grid container spacing={1}>
-        <Grid size={3}>
+    <Nav isTablet={isTablet} id="navbar">
+      <Grid 
+        container 
+        spacing={1} 
+        direction={isTablet ? 'column' : 'row'}
+        alignItems={isTablet ? 'center' : 'flex-start'}
+        id="navbar-grid"
+      >
+        <Grid size={isTablet ? 12 : 3} id="menu-logo">
           <Box sx={{ 
             display: 'flex', 
             alignItems: 'flex-start',
+            width: isTablet ? '100%' : 'auto',
+            justifyContent: isTablet ? 'center' : 'flex-start',
           }}>
             <IconButton
               onClick={handleClick}
@@ -34,6 +44,7 @@ const Navbar = () => {
               aria-controls={open ? 'account-menu' : undefined}
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
+              sx={{ position: isTablet ? 'absolute' : 'static', left: isTablet ? '20px' : 'auto' }}
             >
               <MenuRoundedIcon style={{ color: 'white', fontSize: '2rem' }} />
             </IconButton>
@@ -41,7 +52,8 @@ const Navbar = () => {
               component="img"
               sx={{
                 height: 94,
-                ml: 6.25
+                ml: isTablet ? 'auto' : 2,
+                mr: isTablet ? 'auto' : 0
               }}
               alt="Logo Livro"
               src="/images/livro-logo-branco.png"
@@ -64,23 +76,40 @@ const Navbar = () => {
           </Box>
         </Grid>
         <Grid size={6}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center'}}>
-            <Typography variant="h3" sx={{ color: (theme) => theme.colors.light }}>
+          <MainContent>
+            <Typography 
+              variant={isTablet ? "h4" : "h3"} 
+              sx={{ 
+                color: (theme) => theme.colors.light,
+                textAlign: 'center'
+              }}
+            >
               Encontre o seu livro
             </Typography>
             <TextField 
               id="search-bar"
               label="Pesquisar"
               variant="filled"
+              fullWidth
               sx={{
                 backgroundColor: (theme) => theme.colors.light,
                 borderRadius: '80px',
+                maxWidth: isTablet ? '90%' : 'none',
+                height: '35px',
                 '& .MuiInputLabel-root': {
-                  color: (theme) => theme.colors.brown
+                  color: (theme) => theme.colors.brown,
+                  transform: 'translate(14px, 8px) scale(1)',
+                  '&.Mui-focused': {
+                    transform: 'translate(14px, -10px) scale(0.75)'
+                  },
+                  '&.MuiInputLabel-shrink': {
+                    transform: 'translate(14px, -10px) scale(0.75)'
+                  }
                 },
                 '& .MuiFilledInput-root': {
                   backgroundColor: (theme) => theme.colors.light,
                   borderRadius: '80px',
+                  height: '35px',
                   '&:hover': {
                     backgroundColor: (theme) => theme.colors.light,
                   },
@@ -96,12 +125,14 @@ const Navbar = () => {
                 }
               }}
             />
-          </Box>
+          </MainContent>
         </Grid>
-        <Grid size={3} sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-end' }}>
-          <Button variant="contained" sx={{ marginRight: '15px' }}>Criar Conta</Button>
-          <Button color="secondary" variant="contained">Entrar</Button>
-        </Grid>
+        {!isTablet && (
+          <Grid size={3} sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-end' }}>
+            <Button variant="contained" sx={{ marginRight: '15px' }}>Criar Conta</Button>
+            <Button color="secondary" variant="contained">Entrar</Button>
+          </Grid>
+        )}
       </Grid>
     </Nav>
   );
