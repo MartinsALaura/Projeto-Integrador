@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Nav, MainContent } from './styles';
 import Grid from '@mui/material/Grid';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
@@ -13,13 +14,21 @@ import { useMediaQueries } from '../../styles/mediaQuery';
 
 const Navbar = () => {
   const { isTablet } = useMediaQueries();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleNavigate = (path) => {
+    navigate(path);
+    handleClose();
   };
 
   return (
@@ -34,9 +43,11 @@ const Navbar = () => {
         <Grid size={isTablet ? 12 : 3} id="menu-logo">
           <Box sx={{ 
             display: 'flex', 
-            alignItems: 'flex-start',
-            width: isTablet ? '100%' : 'auto',
-            justifyContent: isTablet ? 'center' : 'flex-start',
+            alignItems: 'center',
+            width: '100%',
+            justifyContent: 'space-between',
+            position: 'relative',
+            paddingRight: isTablet ? '20px' : 0
           }}>
             <IconButton
               onClick={handleClick}
@@ -53,10 +64,12 @@ const Navbar = () => {
               sx={{
                 height: 94,
                 ml: isTablet ? 'auto' : 2,
-                mr: isTablet ? 'auto' : 0
+                mr: isTablet ? 'auto' : 0,
+                cursor: 'pointer'
               }}
               alt="Logo Livro"
               src="/images/livro-logo-branco.png"
+              onClick={() => navigate('/')}
             />
             <Menu
               id="basic-menu"
@@ -69,9 +82,8 @@ const Navbar = () => {
                 },
               }}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem onClick={() => handleNavigate('/login')}>Entrar</MenuItem>
+              <MenuItem onClick={() => handleNavigate('/signup')}>Criar Conta</MenuItem>
             </Menu>
           </Box>
         </Grid>
@@ -129,8 +141,20 @@ const Navbar = () => {
         </Grid>
         {!isTablet && (
           <Grid size={3} sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-end' }}>
-            <Button variant="contained" sx={{ marginRight: '15px' }}>Criar Conta</Button>
-            <Button color="secondary" variant="contained">Entrar</Button>
+            <Button 
+              variant="contained" 
+              sx={{ marginRight: '15px' }}
+              onClick={() => navigate('/signup')}
+            >
+              Criar Conta
+            </Button>
+            <Button 
+              color="secondary" 
+              variant="contained"
+              onClick={() => navigate('/login')}
+            >
+              Entrar
+            </Button>
           </Grid>
         )}
       </Grid>

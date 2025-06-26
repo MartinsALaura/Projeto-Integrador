@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import { theme } from './styles/theme';
 import Reset from './styles/reset';
 import HomePage from './components/HomePage';
+import Login from './components/Login';
+import Signup from './components/Signup';
 
 const AppWrapper = styled.div`
   min-height: 100vh;
@@ -27,8 +29,8 @@ function App() {
             <Main>
               <Routes>
                 <Route path="/" element={<HomePage />} />
-                {/* Add other routes here */}
-                <Route path="*" element={<div>Page Not Found</div>} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
               </Routes>
             </Main>
           </AppWrapper>
