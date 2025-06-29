@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Right, Left, BooksImg } from "./styles";
 import { useMediaQueries } from "../../styles/mediaQuery";
 
-export const Entry = () => {
+export const Entry = ({ content }) => {
   const { isTablet } = useMediaQueries();
 
   return (
@@ -12,7 +12,9 @@ export const Entry = () => {
           <BooksImg src="/images/livros.svg" alt="Livros" />
         </Left>
       )}
-      <Right data-testid="right" $isTablet={isTablet}>a</Right>
+      <Right data-testid="right" $isTablet={isTablet}>
+        {content}
+      </Right>
     </Container>
   );
 }
