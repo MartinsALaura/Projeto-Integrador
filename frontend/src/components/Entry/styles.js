@@ -12,11 +12,12 @@ export const Container = styled.div`
 
 export const Right = styled.div`
   width: ${props => props.$isTablet ? '100%' : '40%'};
-  padding: 20px;
   background-color: ${props => props.theme.colors.light};
   height: 100dvh;
   display: flex;
   box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const Left = styled.div`

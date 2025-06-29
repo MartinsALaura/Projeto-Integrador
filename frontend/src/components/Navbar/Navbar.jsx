@@ -11,12 +11,14 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useMediaQueries } from '../../styles/mediaQuery';
+import { useSearch } from '../../context/SearchContext';
 
 const Navbar = () => {
   const { isTablet } = useMediaQueries();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const { search, setSearch } = useSearch();
   
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -103,6 +105,8 @@ const Navbar = () => {
               label="Pesquisar"
               variant="filled"
               fullWidth
+              value={search}
+              onChange={e => setSearch(e.target.value)}
               sx={{
                 backgroundColor: (theme) => theme.colors.light,
                 borderRadius: '80px',
@@ -112,9 +116,11 @@ const Navbar = () => {
                   color: (theme) => theme.colors.brown,
                   transform: 'translate(14px, 8px) scale(1)',
                   '&.Mui-focused': {
+                    color: (theme) => theme.colors.brown,
                     transform: 'translate(14px, -10px) scale(0.75)'
                   },
                   '&.MuiInputLabel-shrink': {
+                    color: (theme) => theme.colors.brown,
                     transform: 'translate(14px, -10px) scale(0.75)'
                   }
                 },
@@ -145,11 +151,12 @@ const Navbar = () => {
               variant="contained" 
               sx={{ marginRight: '15px' }}
               onClick={() => navigate('/signup')}
+              color="brown"
             >
               Criar Conta
             </Button>
             <Button 
-              color="secondary" 
+              color="light" 
               variant="contained"
               onClick={() => navigate('/login')}
             >

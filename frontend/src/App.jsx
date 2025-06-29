@@ -8,6 +8,7 @@ import Reset from './styles/reset';
 import HomePage from './components/HomePage';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import { SearchProvider } from './context/SearchContext';
 
 const AppWrapper = styled.div`
   min-height: 100vh;
@@ -21,22 +22,24 @@ const Main = styled.main`
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <StyledThemeProvider theme={theme}>
-        <Router>
-          <AppWrapper>
-            <Reset />
-            <Main>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-              </Routes>
-            </Main>
-          </AppWrapper>
-        </Router>
-      </StyledThemeProvider>
-    </ThemeProvider>
+    <SearchProvider>
+      <ThemeProvider theme={theme}>
+        <StyledThemeProvider theme={theme}>
+          <Router>
+            <AppWrapper>
+              <Reset />
+              <Main>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
+                </Routes>
+              </Main>
+            </AppWrapper>
+          </Router>
+        </StyledThemeProvider>
+      </ThemeProvider>
+    </SearchProvider>
   );
 }
 

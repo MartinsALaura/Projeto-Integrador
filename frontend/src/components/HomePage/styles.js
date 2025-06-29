@@ -18,4 +18,5 @@ export const Content = styled.div`
   padding: ${props => props.isTablet ? '24px' : '20px'};
   background-color: ${props => props.theme.colors.light};
   align-self: center;
+  gap: 30px;
 `;
