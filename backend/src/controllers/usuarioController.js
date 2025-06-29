@@ -20,10 +20,10 @@ const usuarioController = {
     async login(req, res) {
         try {
             const { email, senha } = req.body;
-            const resultado = await usuarioService.autenticar(email, senha);
+            const resultado = await usuarioService.authenticate(email, senha);
             res.json(resultado);
         } catch (erro) {
-            if (erro.message === 'Usuário não encontrado' || erro.message === 'Senha incorreta') {
+            if (erro.message === 'Login ou senha incorretos') {
                 return res.status(401).json({ erro: erro.message });
             }
             res.status(500).json({ erro: 'Erro ao fazer login' });
@@ -37,6 +37,23 @@ const usuarioController = {
             res.json({ existe: !!usuario });
         } catch (erro) {
             res.status(500).json({ erro: 'Erro ao verificar email' });
+        }
+    },
+
+    async getLivrosByUsuario(req, res) {
+        try {
+            const { usuarioId } = req.params;
+            const livros = await require('../services/livro.service').getByUsuarioId(usuarioId);
+            
+            // Convert buffer to base64 string for images
+            const livrosWithBase64Images = livros.map(livro => ({
+                ...livro,
+                imagem: livro.imagem ? `data:image/jpeg;base64,${livro.imagem.toString('base64')}` : null
+            }));
+            
+            res.json(livrosWithBase64Images);
+        } catch (erro) {
+            res.status(500).json({ erro: 'Erro ao buscar livros do usuário' });
         }
     }
 };

@@ -1,4 +1,4 @@
-const pool = require('../config/database');
+const { pool } = require('../config/database');
 
 const livroModel = {
     create: async (livro) => {
@@ -17,6 +17,11 @@ const livroModel = {
     getById: async (id) => {
         const [rows] = await pool.execute('SELECT * FROM livros WHERE id = ?', [id]);
         return rows[0];
+    },
+
+    getByUsuarioId: async (usuario_id) => {
+        const [rows] = await pool.execute('SELECT * FROM livros WHERE usuario_id = ?', [usuario_id]);
+        return rows;
     },
 
     update: async (id, livro) => {

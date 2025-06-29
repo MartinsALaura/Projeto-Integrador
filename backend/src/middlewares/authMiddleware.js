@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'sua-chave-secreta';
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'; // Match the secret in usuario.service.js
 
 const authMiddleware = (req, res, next) => {
     // Pega o token do header Authorization

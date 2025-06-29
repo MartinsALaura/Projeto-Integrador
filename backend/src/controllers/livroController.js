@@ -3,11 +3,18 @@ const service = require('../services/livro.service');
 const livroController = {
     create: async (req, res) => {
         try {
-            const { titulo, autor, contato, endereco, descricao, imagem } = req.body;
+            const { titulo, autor, contato, endereco, descricao } = req.body;
+            let { imagem } = req.body;
             
             // Validação dos campos obrigatórios
             if (!titulo || !autor) {
                 return res.status(400).json({ error: 'Título e autor são obrigatórios' });
+            }
+
+            // Convert base64 image to buffer if it exists
+            if (imagem && typeof imagem === 'string' && imagem.startsWith('data:image')) {
+                const base64Data = imagem.replace(/^data:image\/\w+;base64,/, '');
+                imagem = Buffer.from(base64Data, 'base64');
             }
 
             const livro = {
@@ -17,7 +24,7 @@ const livroController = {
                 endereco,
                 descricao,
                 imagem,
-                usuario_id: req.usuarioId // Usando o ID do usuário autenticado
+                usuario_id: req.usuarioId
             };
 
             const result = await service.create(livro);
@@ -26,16 +33,23 @@ const livroController = {
                 id: result.insertId
             });
         } catch (error) {
-                        res.status(500).json({ error: 'Erro ao criar livro' });
+            console.error('Erro ao criar livro:', error);
+            res.status(500).json({ error: 'Erro ao criar livro' });
         }
     },
 
     getAll: async (req, res) => {
         try {
             const livros = await service.getAll();
-            res.json(livros);
+            // Convert buffer to base64 string for images
+            const livrosWithBase64Images = livros.map(livro => ({
+                ...livro,
+                imagem: livro.imagem ? `data:image/jpeg;base64,${livro.imagem.toString('base64')}` : null
+            }));
+            res.json(livrosWithBase64Images);
         } catch (error) {
-                        res.status(500).json({ error: 'Erro ao buscar livros' });
+            console.error('Erro ao buscar livros:', error);
+            res.status(500).json({ error: 'Erro ao buscar livros' });
         }
     },
 
@@ -45,23 +59,36 @@ const livroController = {
             const livro = await service.getById(id);
             
             if (livro) {
-                res.json(livro);
+                // Convert buffer to base64 string for image
+                const livroWithBase64Image = {
+                    ...livro,
+                    imagem: livro.imagem ? `data:image/jpeg;base64,${livro.imagem.toString('base64')}` : null
+                };
+                res.json(livroWithBase64Image);
             } else {
                 res.status(404).json({ message: 'Livro não encontrado' });
-message                 }
+            }
         } catch (error) {
-                        res.status(500).json({ error: 'Erro ao buscar livro' });
+            console.error('Erro ao buscar livro:', error);
+            res.status(500).json({ error: 'Erro ao buscar livro' });
         }
     },
 
     update: async (req, res) => {
         try {
             const { id } = req.params;
-            const { titulo, autor, contato, endereco, descricao, imagem } = req.body;
+            const { titulo, autor, contato, endereco, descricao } = req.body;
+            let { imagem } = req.body;
 
             // Validação dos campos obrigatórios
             if (!titulo || !autor) {
                 return res.status(400).json({ error: 'Título e autor são obrigatórios' });
+            }
+
+            // Convert base64 image to buffer if it exists and has changed
+            if (imagem && typeof imagem === 'string' && imagem.startsWith('data:image')) {
+                const base64Data = imagem.replace(/^data:image\/\w+;base64,/, '');
+                imagem = Buffer.from(base64Data, 'base64');
             }
 
             const livro = {
@@ -71,7 +98,7 @@ message                 }
                 endereco,
                 descricao,
                 imagem,
-                usuario_id: req.usuarioId // Usando o ID do usuário autenticado
+                usuario_id: req.usuarioId
             };
 
             const result = await service.update(id, livro);
@@ -82,7 +109,8 @@ message                 }
                 res.status(404).json({ error: 'Livro não encontrado ou não autorizado' });
             }
         } catch (error) {
-                        res.status(500).json({ error: 'Erro ao atualizar livro' });
+            console.error('Erro ao atualizar livro:', error);
+            res.status(500).json({ error: 'Erro ao atualizar livro' });
         }
     },
 
