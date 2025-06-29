@@ -21,7 +21,6 @@ const HomePage = () => {
     fetch('http://localhost:3000/api/livros/')
       .then(res => res.json())
       .then(data => {
-        console.log('Raw API response:', data);
         const livrosData = Array.isArray(data) ? data : (data.data || data.livros || data.results || []);
         setLivros(livrosData);
         setLoading(false);
@@ -53,7 +52,7 @@ const HomePage = () => {
 
   return (
     <Container>
-      <Navbar />
+      <Navbar title={'Encontre o seu livro'} />
       <Content isTablet={isTablet}>
         {loading ? (
           <p>Loading books...</p>

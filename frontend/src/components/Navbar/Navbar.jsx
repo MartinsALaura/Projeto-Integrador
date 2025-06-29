@@ -12,10 +12,12 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useMediaQueries } from '../../styles/mediaQuery';
 import { useSearch } from '../../context/SearchContext';
+import { useAuth } from '../../context/AuthContext';
 
-const Navbar = () => {
+const Navbar = ({ title }) => {
   const { isTablet } = useMediaQueries();
   const navigate = useNavigate();
+  const { user, logout } = useAuth();  // Remove isAuthenticated from destructuring
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const { search, setSearch } = useSearch();
@@ -30,6 +32,12 @@ const Navbar = () => {
 
   const handleNavigate = (path) => {
     navigate(path);
+    handleClose();
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
     handleClose();
   };
 
@@ -84,8 +92,18 @@ const Navbar = () => {
                 },
               }}
             >
-              <MenuItem onClick={() => handleNavigate('/login')}>Entrar</MenuItem>
-              <MenuItem onClick={() => handleNavigate('/signup')}>Criar Conta</MenuItem>
+              <MenuItem onClick={() => handleNavigate('/')}>Página Inicial</MenuItem>
+              {user ? (  // Check if user object exists
+                <>
+                  <MenuItem onClick={() => handleNavigate('/user')}>Meus Livros</MenuItem>
+                  <MenuItem onClick={handleLogout}>Sair</MenuItem>
+                </>
+              ) : (
+                <>
+                  <MenuItem onClick={() => handleNavigate('/login')}>Entrar</MenuItem>
+                  <MenuItem onClick={() => handleNavigate('/signup')}>Criar Conta</MenuItem>
+                </>
+              )}
             </Menu>
           </Box>
         </Grid>
@@ -98,7 +116,7 @@ const Navbar = () => {
                 textAlign: 'center'
               }}
             >
-              Encontre o seu livro
+              {title}
             </Typography>
             <TextField 
               id="search-bar"
@@ -147,21 +165,33 @@ const Navbar = () => {
         </Grid>
         {!isTablet && (
           <Grid size={3} sx={{ display: 'flex', alignItems: 'start', justifyContent: 'flex-end' }}>
-            <Button 
-              variant="contained" 
-              sx={{ marginRight: '15px' }}
-              onClick={() => navigate('/signup')}
-              color="brown"
-            >
-              Criar Conta
-            </Button>
-            <Button 
-              color="light" 
-              variant="contained"
-              onClick={() => navigate('/login')}
-            >
-              Entrar
-            </Button>
+            {user ? (  // Check if user object exists
+              <Button 
+                color="light" 
+                variant="contained"
+                onClick={handleLogout}
+              >
+                Sair
+              </Button>
+            ) : (
+              <>
+                <Button 
+                  variant="contained" 
+                  sx={{ marginRight: '15px' }}
+                  onClick={() => navigate('/signup')}
+                  color="brown"
+                >
+                  Criar Conta
+                </Button>
+                <Button 
+                  color="light" 
+                  variant="contained"
+                  onClick={() => navigate('/login')}
+                >
+                  Entrar
+                </Button>
+              </>
+            )}
           </Grid>
         )}
       </Grid>

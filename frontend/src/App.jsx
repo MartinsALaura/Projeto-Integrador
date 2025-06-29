@@ -8,7 +8,10 @@ import Reset from './styles/reset';
 import HomePage from './components/HomePage';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import UserPage from './components/UserPage';
+import ProtectedRoute from './components/ProtectedRoute';
 import { SearchProvider } from './context/SearchContext';
+import { AuthProvider } from './context/AuthContext';
 
 const AppWrapper = styled.div`
   min-height: 100vh;
@@ -22,24 +25,34 @@ const Main = styled.main`
 
 function App() {
   return (
-    <SearchProvider>
-      <ThemeProvider theme={theme}>
-        <StyledThemeProvider theme={theme}>
-          <Router>
-            <AppWrapper>
-              <Reset />
-              <Main>
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/signup" element={<Signup />} />
-                </Routes>
-              </Main>
-            </AppWrapper>
-          </Router>
-        </StyledThemeProvider>
-      </ThemeProvider>
-    </SearchProvider>
+    <AuthProvider>
+      <SearchProvider>
+        <ThemeProvider theme={theme}>
+          <StyledThemeProvider theme={theme}>
+            <Router>
+              <AppWrapper>
+                <Reset />
+                <Main>
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route 
+                      path="/user" 
+                      element={
+                        <ProtectedRoute>
+                          <UserPage />
+                        </ProtectedRoute>
+                      } 
+                    />
+                  </Routes>
+                </Main>
+              </AppWrapper>
+            </Router>
+          </StyledThemeProvider>
+        </ThemeProvider>
+      </SearchProvider>
+    </AuthProvider>
   );
 }
 
